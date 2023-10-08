@@ -1,0 +1,2 @@
+powershell -command "Get-Process 'Battle.net' | Stop-Process -Force"
+powershell -command "Start-Process 'C:\\Program Files (x86)\\Battle.net\\Battle.net.exe' '--no-sandbox --from-launcher --remote-debugging-port=9222'"
