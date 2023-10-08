@@ -1,10 +1,14 @@
 use core::time;
 use std::{
     io::Read,
-    process::{Command, Stdio}, thread,
+    process::{Command, Stdio},
+    thread,
 };
 
+// This launches Overwatch. Which was the initial reason I did this, to be able to send a packet to launch the game.
+// Then, well then Billy took the wheel.
 const INJECTED_JS_PLAY: &'static str = "document.getElementsByClassName('play-btn')[0].click();";
+
 const INJECTED_JS_WOOP_SOUND: &'static str = r###"console.log("WOOP_SOUND"); 
 var hasClicked = false;
 document.addEventListener("click", function(evt) {
@@ -24,7 +28,6 @@ for (const a of document.getElementsByTagName('img')) {
 for (const a of document.getElementsByClassName("avatar-img")) {
     a.style = "background-image: url('https://streamsentials.com/wp-content/uploads/2021/01/gachibass.gif')";
 }
-
 "###;
 const INJECTED_JS_ALL_BILLY_IMAGES: &'static str = r###"console.log("ALL BILLY IMAGES"); 
 var audioel = document.createElement('audio');
@@ -39,8 +42,10 @@ const INJECTED_JS_BILLY_RADIO_CTL: &'static str = "console.log('BILLY_RADIO_CTL'
 const INJECTED_JS_REMOVE_ADS: &'static str = "console.log('REMOVE_ADS'); document.getElementsByClassName('content-container content')[0].remove();";
 const INJECTED_JS_WIDEN_CONTAINER: &'static str = "console.log('WIDEN_CONTAINER'); document.getElementsByClassName('play')[1].setAttribute('style', 'height: 100% !important; width: 100% !important');";
 const INJECTED_JS_LOAD_BILLY: &'static str = "console.log('LOAD_BILLY'); document.getElementsByClassName('play-logo')[0].style='background-image: url(https://streamsentials.com/wp-content/uploads/2021/01/gachibass.gif); transform: translateX(30%) translateY(180px) scale(3.25);'";
-const INJECTED_JS_CLICK_OW: &'static str = "console.log('CLICK_OW'); document.getElementById('game-nav-btn-Pro').click();";
+const INJECTED_JS_CLICK_OW: &'static str =
+    "console.log('CLICK_OW'); document.getElementById('game-nav-btn-Pro').click();";
 const INJECTED_JS_BILLY_BUTTONS: &'static str = r###"console.log('BILLY_BUTTONS'); list[0].innerHTML = `<button id="BILLYRADIO" style="background-color: #fe2ef7; width: 100%; height: 100%; color: white; border-radius: 1.5rem; padding: 2rem;" onclick="toggleBillyRadio()">PAUSE BILLY RADIO</button>`; list[0].innerHTML += `<button style="background-color: #696969; color: gold; border-radius: 2.25rem; border: 2px solid cyan; padding: 3rem;" id="SUPPORTBILLYNET" onclick="SUPPORTBILLY()">SUPPORT BILLY.NET</button>`;"###;
+const INJECTED_JS_RICK_BG: &'static str = "document.getElementsByTagName('body')[0].setAttribute('style', 'background-image: url(https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif); background-size: cover;');";
 const CEF_PATH: &'static str = ".\\cefdebug.exe";
 
 fn main() {
@@ -61,11 +66,11 @@ fn main() {
     }
 
     fn init_billy(debugger_url: &str) {
+        inject_js(INJECTED_JS_RICK_BG, debugger_url);
         inject_js(
-            r###"document.getElementsByTagName('body')[0].setAttribute('style', 'background-image: url(https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif); background-size: cover;');"###,
-            debugger_url
+            &format!("{} {}", INJECTED_JS_WOOP_SOUND, INJECTED_JS_REMOVE_ADS),
+            debugger_url,
         );
-        inject_js(&format!("{} {}", INJECTED_JS_WOOP_SOUND, INJECTED_JS_REMOVE_ADS), debugger_url);
         inject_js(INJECTED_JS_ALL_BILLY_IMAGES, debugger_url);
         inject_js(INJECTED_JS_WIDEN_CONTAINER, debugger_url);
         inject_js(INJECTED_JS_LOAD_BILLY, debugger_url);
