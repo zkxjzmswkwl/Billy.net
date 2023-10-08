@@ -19,7 +19,8 @@ document.addEventListener("click", function(evt) {
 const INJECTED_JS_REMOVE_ADS: &'static str = "document.getElementsByClassName('content-container content')[0].remove();";
 const INJECTED_JS_WIDEN_CONTAINER: &'static str = "document.getElementsByClassName('play')[1].setAttribute('style', 'height: 100% !important; width: 100% !important');";
 const INJECTED_JS_LOAD_BILLY: &'static str = "document.getElementsByClassName('play-logo')[0].style='background-image: url(https://streamsentials.com/wp-content/uploads/2021/01/gachibass.gif); transform: translateX(30%) translateY(180px) scale(3.25);'";
-const CEF_PATH: &'static str = "C:\\Users\\Carter\\Documents\\cefdebug\\cefdebug.exe";
+const INJECTED_JS_CLICK_OW: &'static str = "document.getElementById('game-nav-btn-Pro').click();";
+const CEF_PATH: &'static str = ".\\cefdebug.exe";
 
 fn main() {
     fn launch_bnet_debug() {
@@ -75,8 +76,9 @@ fn main() {
                 .split("\r")
                 .collect();
 
+            inject_js(INJECTED_JS_CLICK_OW, debugger_url[0]);
             change_bg(debugger_url[0]);
-            inject_js(INJECTED_JS_PLAY, debugger_url[0]);
+            // inject_js(INJECTED_JS_PLAY, debugger_url[0]);
         }
     }
 }
