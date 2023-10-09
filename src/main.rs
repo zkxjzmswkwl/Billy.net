@@ -10,8 +10,11 @@ use std::{
 const INJECTED_JS_PLAY: &'static str = "document.getElementsByClassName('play-btn')[0].click();";
 
 const INJECTED_JS_WOOP_SOUND: &'static str = r###"console.log("WOOP_SOUND"); 
+var sound = new Audio("https://www.myinstants.com/media/sounds/woo_htcxajK.mp3");
 var hasClicked = false;
 document.addEventListener("click", function(evt) {
+    sound.volume = 1;
+    sound.play();
     if (!hasClicked) {
         ASSTRUMS.play();
         hasClicked = true;
@@ -31,8 +34,8 @@ for (const a of document.getElementsByClassName("avatar-img")) {
 "###;
 const INJECTED_JS_ALL_BILLY_IMAGES: &'static str = r###"console.log("ALL BILLY IMAGES"); 
 var audioel = document.createElement('audio');
-//audioel.setAttribute('src', 'https://dl.sndup.net/fpwt/Billy%20and%20the%20ASStrums%20-%20HandClap%20(right%20version).mp3');
-audioel.setAttribute('src', 'https://dl.sndup.net/xtjs/[ytmp3page]_Leave_the_Gachimuchi_on_.mp3');
+audioel.setAttribute('src', 'https://dl.sndup.net/fpwt/Billy%20and%20the%20ASStrums%20-%20HandClap%20(right%20version).mp3');
+//audioel.setAttribute('src', 'https://dl.sndup.net/xtjs/[ytmp3page]_Leave_the_Gachimuchi_on_.mp3');
 audioel.setAttribute('preload', 'auto');
 audioel.setAttribute('id', 'ASSTRUMS');
 document.getElementById('main-header').appendChild(audioel);
